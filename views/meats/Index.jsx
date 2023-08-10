@@ -1,10 +1,17 @@
 import React from 'react'
 
-function Index(props) {
+function Index({meats}) {
     return (
         <div>
             <h1>Index</h1>
-            {props.meats.map((meat, i) => <p key={i}>{meat.name}</p>)}
+            {meats.map((meat,i)=>
+            <div key={i}>
+            <a href={`/meats/${i}`}>{meat.name}</a>
+            </div>
+            )}
+            <a href={`/vegetables/`}><button>Vegies</button></a>
+            <a href={`/fruits/`}><button>Fruits</button></a>
+            <a href={`/meats/new`}><button>Add new</button></a>
         </div>
     )
 }
