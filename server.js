@@ -4,6 +4,12 @@ const app = express()
 
 const PORT = 8080
 
+require('dotenv').config()
+
+const mongoConfig = require('./config')
+
+mongoConfig()
+
 // Bring in our routes
 const fruitRoutes = require('./routes/fruitRoutes')
 const meatRoutes = require('./routes/meatRoutes')

@@ -1,16 +1,28 @@
 // Bring in our fruit data
 const fruits = require('../models/fruits')
 
+const Fruit = require('../models/Fruit')
 // GET /fruits
-module.exports.index = (req, res) => {
-    res.render('fruits/Index', { fruits })
+module.exports.index = async (req, res) => {
+    const databaseFruits = await Fruit.find()
+    console.log(databaseFruits)
+    res.render('fruits/Index', { fruits:databaseFruits })
 }
 
-//  GET /fruits/:indexOfFruits
-module.exports.show = (req, res) => {
-    console.log('GET /fruits/:indexOfFruits')
-    if (fruits[req.params.indexOfFruit]) {
-        res.render('fruits/Show', { fruit: fruits[req.params.indexOfFruit], index: req.params.indexOfFruit })
+//  GET /fruits/:id
+module.exports.show = async (req, res) => {
+    console.log('GET /fruits/:id')
+    let fruit;
+    try{
+        fruit = await Fruit.findById(req.params.id)
+        console.log(fruit)
+    }catch(err){
+        console.log('Failed to find id ' + req.params.id, err)
+    }
+    
+
+    if (fruit) {
+        res.render('fruits/Show', { fruit })
     } else {
         res.redirect('/fruits')
     }
@@ -27,13 +39,20 @@ module.exports.edit = (req, res) => {
 }
 
 // POST /fruits
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
     console.log('POST /fruits')
     console.log(req.body) // <-- should contain form data
+   
+    
     if (req.body.readyToEat === 'on') {
         req.body.readyToEat = true
     } else {
         req.body.readyToEat = false
+    }
+    try {
+        const newFruit = await Fruit.create(req.body)
+    } catch(err){
+        console.log("mongoCreate err: ", err)
     }
     fruits.push(req.body)
     res.redirect('/fruits')

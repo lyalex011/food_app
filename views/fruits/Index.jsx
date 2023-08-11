@@ -6,7 +6,7 @@ function Index({fruits}) {
             <h1>Index</h1>
             {fruits.map((fruit,i)=>
             <div key={i}>
-            <a href={`/fruits/${i}`}>{fruit.name}</a>
+            <a href={`/fruits/${fruit._id}`}>{fruit.name}</a>
             </div>
             )}
             <a href={`/vegetables/`}><button>Vegies</button></a>
